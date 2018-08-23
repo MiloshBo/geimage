@@ -1,3 +1,5 @@
 # getimage
 
-Program takes image from the pages and opens it in browser
+Script takes image from the page, downloads it to hard drive and opens it in browser
+
+Advanced script takes 20 images.
