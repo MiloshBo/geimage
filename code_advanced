@@ -1,0 +1,29 @@
+! python3
+# this code downlowads 20 images on local hard drive and opens them in 20 tabs
+
+import os
+import webbrowser 
+browser_path = r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
+webbrowser.register('mozzila', None, webbrowser.BackgroundBrowser(browser_path))
+
+def image_down(start_img, stop_imp):
+	for numb in range(start_img, stop_img):
+		url = f'http://xkcd.com/{numb}'
+		url_get = requests.get(url)
+		soup = BeautifulSoup(url_get.content, 'html.parser')
+		link = soup.find('div', id='comic').find('img').get('src')
+		link = link.replace('//', 'http://')
+		img_name = os.path.basename(link)
+		webbrowser.get('mozzila').open_new_tab(link)
+		try:
+			img = requests.get(link)
+			with open(img_name, 'wb') as f_out:
+				f_out.write(img.content)
+		except:
+			# Just want images don't care about errors
+			pass
+			
+if __name__ == '__main__':
+	start_img = 1
+	stop_img = 10
+	image_down(start_img, stop_img)
