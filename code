@@ -1,7 +1,12 @@
+#! python3
+# takes image from the first page, downloads it and opens in tab
+
 import requests
 from bs4 import BeautifulSoup
 import webbrowser
 import os
+browser_path = r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
+webbrowser.register('mozzila', None, webbrowser.BackgroundBrowser(browser_path))
 
 url = 'http://xkcd.com/1/'
 url_get = requests.get(url)
@@ -14,10 +19,10 @@ link = link.replace('//', 'http://')
 print(f'{text}\n{link}')
 
 # Download image
-img_name = os.path.basename(link)     # works without os.path
-img = requests.get(link)              # code actually works
-with open(img_name, 'wb') as f_out:   # without
-	f_out.write(img.content)          # these 3 lines
+img_name = os.path.basename(link)     
+img = requests.get(link)              
+with open(img_name, 'wb') as f_out:   
+	f_out.write(img.content)          
 
 # Open image in browser or default image viewer
-webbrowser.open_new_tab(img_name)
+webbrowser.get('mozzila').open_new_tab(link)
