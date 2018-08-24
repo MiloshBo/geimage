@@ -1,0 +1,29 @@
+#! python3
+# speeds up downloading pictures wiht concurrent.futures
+
+import requests
+from bs4 import BeautifulSoup
+import concurrent.futures
+import os
+
+def image_down(url):
+	url_get = requests.get(url)
+	soup = BeautifulSoup(url_get.content, 'lxml')
+	link = soup.find('div', id='comic').find('img').get('src')
+	link = link.replace('//', 'http://')
+	img_name = os.path.basename(link)
+	try:
+		img = requests.get(link)
+		with open(img_name, 'wb') as f_out:
+			f_out.write(img.content)
+	except:
+		# Just want images don't care about errors
+		pass
+
+if __name__ == '__main__':
+	start_img = 1
+	stop_img = 100
+	with concurrent.futures.ProcessPoolExecutor(max_workers=20) as executor:
+		for numb in range(start_img, stop_img):
+			url = f'http://xkcd.com/{numb}/'
+			executor.submit(image_down, url)
