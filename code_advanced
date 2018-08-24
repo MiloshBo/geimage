@@ -1,8 +1,11 @@
 #! python3
 # this code downlowads 20 images on local hard drive and opens them in 20 tabs
 
+import requests 
+from bs4 import BeautifulSoup
 import os
 import webbrowser 
+
 browser_path = r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
 webbrowser.register('mozzila', None, webbrowser.BackgroundBrowser(browser_path))
 
